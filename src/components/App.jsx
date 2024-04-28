@@ -1,7 +1,8 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 
 import './App.css';
 import Product from './Product';
+import SearchBar from './SearchBar/SearchBar';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         imgUrl="https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?dpr=2&h=480&w=640"
         price={14.29}
       />
+      <SearchBar />
     </div>
   );
 }
