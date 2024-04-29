@@ -3,6 +3,7 @@
 import './App.css';
 import Product from './Product';
 import SearchBar from './SearchBar/SearchBar';
+import FeedbackForm from './Form/Form';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         price={14.29}
       />
       <SearchBar />
+      <FeedbackForm />
     </div>
   );
 }
