@@ -1,11 +1,10 @@
-// import { useState } from 'react';
-
 import './App.css';
 import Product from './Product';
 import SearchBar from './SearchBar/SearchBar';
 import FeedbackForm from './Form/Form';
 import Slider from './Slider/Slider';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const images = [
   'https://images.pexels.com/photos/3836292/pexels-photo-3836292.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500',
@@ -22,8 +21,53 @@ function App() {
     setIndex(type === 'next' ? index + 1 : index - 1);
   };
 
+  //=========================================================
+
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    async function fetchArticles() {
+      try {
+        // 1. Встановлюємо індикатор в true перед запитом
+        setLoading(true);
+        const response = await axios.get(
+          'https://hn.algolia.com/api/v1/search1?query=react'
+        );
+        setArticles(response.data.hits);
+      } catch (error) {
+        // Тут будемо обробляти помилку
+        setError(true);
+      } finally {
+        // 2. Встановлюємо індикатор в false після запиту
+        setLoading(false);
+      }
+    }
+
+    fetchArticles();
+  }, []);
+
   return (
     <div>
+      <div>
+        <h1>Latest articles</h1>
+        {loading && <p>Loading data, please wait...</p>}
+        {error && (
+          <p>Whoops, something went wrong! Please try reloading this page!</p>
+        )}
+        {articles.length > 0 && (
+          <ul>
+            {articles.map(({ objectID, url, title }) => (
+              <li key={objectID}>
+                <a href={url} target="_blank" rel="noreferrer noopener">
+                  {title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
       <h1>Best selling</h1>
 
       <Product
