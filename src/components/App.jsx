@@ -33,8 +33,9 @@ function App() {
         // 1. Встановлюємо індикатор в true перед запитом
         setLoading(true);
         const response = await axios.get(
-          'https://hn.algolia.com/api/v1/search1?query=react'
+          'https://hn.algolia.com/api/v1/search?query=react'
         );
+        console.log(response);
         setArticles(response.data.hits);
       } catch (error) {
         // Тут будемо обробляти помилку
