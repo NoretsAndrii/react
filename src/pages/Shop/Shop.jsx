@@ -3,14 +3,19 @@ import { useState, useEffect } from 'react';
 import css from './Shop.module.css';
 import Basket from '../../components/Slider/Basket/Basket';
 import { Link } from 'react-router-dom';
-// import { useLocation } from 'react-router-dom';
+import ProductCard from '../../components/ProductCard/ProductCard';
+import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProducts } from '../../redux/store';
+import ClearBasketButton from '../../components/ClearBasketButton/ClearBasketButton';
 
 export default function Shop() {
   const [products, setProducts] = useState([]);
-  const [totalBasket, setTotalBasket] = useState(0);
-  const [basket, setBasket] = useState([]);
 
-  // const location = useLocation();
+  const totalBasket = useSelector(store => store.basket.total);
+  const dispatch = useDispatch();
+
+  const location = useLocation();
 
   useEffect(() => {
     async function fetchData() {
@@ -21,31 +26,26 @@ export default function Shop() {
     fetchData();
   }, []);
 
-  const handleClick = (price, product) => {
-    setTotalBasket(prev => prev + price);
-    setBasket(prev => [...prev, product]);
+  const handleClick = product => {
+    dispatch(addProducts(product));
   };
 
   return (
     <div>
       Shop
-      <Link to="basket" state={basket}>
-        <Basket total={totalBasket} />
+      <Link to="basket" state={location}>
+        <Basket total={totalBasket.toFixed(2)} />
       </Link>
+      <ClearBasketButton />
       <ul className={css.list}>
         {products.map(product => (
           <li className={css.item} key={product.id}>
-            <h3>{product.title}</h3>
-            <img className={css.image} src={product.image} alt="" />
-            <div className={css.info}>
-              <p>Price: {product.price}</p>
-              <button
-                type="button"
-                onClick={() => handleClick(product.price, product)}
-              >
-                Buy
-              </button>
-            </div>
+            <ProductCard
+              handleClick={() => handleClick(product)}
+              product={product}
+            >
+              Buy
+            </ProductCard>
           </li>
         ))}
       </ul>
