@@ -1,0 +1,17 @@
+.wrapper {
+  position: relative;
+}
+
+.button {
+  background-color: transparent;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 0;
+  padding: 4px;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  right: 500px;
+}
